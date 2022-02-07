@@ -7,14 +7,48 @@
     <div class="main">
       <router-view/>
     </div>
+    <transition name="fade">
+       <modal-window :settinds="settinds" v-if="modalWindowName" />
+    </transition>
+    <transition name="fade">
+      <context-menu />
+    </transition>
   </div>
 </template>
 
 <script>
+
+import ContextMenu from './components/ContextMenu.vue'
 export default {
-  name: "App",
+  components:{ ModalWindow: () => import ('./components/ModalWindow.vue'), ContextMenu },
+
+  data(){
+    return{
+      modalWindowName: '',
+    settings: {}
+    }
+  },
+  methods: {
+    onShown(settings) {
+      this.modalWindowName = settings.name
+      this.settings = settings
+    },
+    onHide() {
+      this.modalWindowName = ''
+      this.settings = {}
+    }
+   },
   created() {
+    
     this.$store.dispatch('fetchData')
+  },
+   mounted() {
+    this.$modal.EventBus.$on('show', this.onShown)
+    this.$modal.EventBus.$on('hide', this.onHide)
+  },
+  beforeDestroy() {
+    this.$modal.EventBus.$off('show', this.onShown)
+    this.$modal.EventBus.$off('hide', this.onHide)
   },
 }
 </script>
@@ -39,5 +73,12 @@ export default {
       color: #42b983;
     }
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+ 
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

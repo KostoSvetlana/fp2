@@ -7,13 +7,11 @@
     <main>
       TOTAL: {{ getFullPaymentValue }}
       <hr />
-      <button @click="modalShow = true"> Add/Hide </button>
+      <button @click="onShowModal = true"> ShowModal </button>
       <hr />
-      <modal-window-add-payment-form v-if="modalShow" @close="modalShow = false" />
-    <!--  <add-payment-form @addPayment="add "/> -->
+      
         <payments-display :items="currentElements" />
-      <pagination :length="12" :cur="curPage" :n="3
-      " @paginate="onChangePage "/>
+      <pagination :length="12" :cur="curPage" :n="3" @paginate="onChangePage "/>
     </main>
    
   </div>
@@ -22,20 +20,19 @@
 
 <script>
 //import AddPaymentForm from '../components/AddPaymentForm.vue';
-import PaymentsDisplay from '../components/PaymentsDisplay.vue';
+//import PaymentsDisplay from '../components/PaymentsDisplay.vue';
 import { mapMutations, mapActions, mapGetters } from 'vuex'
-import Pagination from '../components/Pagination.vue';
-import ModalWindowAddPaymentForm from '../components/ModalWindowAddPaymentForm.vue'
+//import Pagination from '../components/Pagination.vue';
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Home',
   components: {
-    PaymentsDisplay,
+    PaymentsDisplay: ()=> import('../components/PaymentsDisplay.vue'),
     ///AddPaymentForm,
-    Pagination,
-    ModalWindowAddPaymentForm,
+    Pagination: ()=>import('../components/Pagination.vue'),
+   
    
   },
   data(){
@@ -43,8 +40,6 @@ return {
   curPage: 1,
       n: 10,
   show: false,
-  modalShow: false
- 
 };
   },
     computed: {
@@ -65,6 +60,12 @@ return {
     ...mapActions([
       'fetchData'
     ]),
+    onShowModal(){
+        this.$modal.show('AddPaymentForm', { 
+        header: "Add payment form",
+        content: "AddPaymentForm"
+      })
+    },
     onChangePage(page){
       this.curPage = page
       this.fetchData(page)

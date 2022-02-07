@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper">
-     <div class="header"> Add new peyment</div>
-     <div class="content"> <add-payment-form /></div>
+     <div class="header"> {{settings.header}} </div>
+     <div class="content">  <component :is="settings.content" />
+     </div>
      <div class="footer">
          <button @click="onClose">Close</button>
      </div>
@@ -9,13 +10,19 @@
 </template>
 
 <script>
-import AddPaymentForm from './AddPaymentForm.vue'
+
 export default {
-  components: { AddPaymentForm },
-    name: "ModalWindowAddPaymentForm",
+  components: { 
+    AddPaymentForm: ()=>import ('./AddPaymentForm.vue'),
+    Auth: ()=> import('./Auth.vue') 
+  },
+    name: "ModalWindow",
+    props:{
+    settings: Object  
+  },
     methods: {
         onclose() {
-             this.$emit('close')
+             this.$modal.hide()
         }
     },
 }

@@ -1,42 +1,34 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Page404 from '../views/Page404.vue'
-import AddPaymentForm  from '../components/AddPaymentForm.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: Home
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/dashboard/:page',
-    name: 'dashboard',
-    component: Home
+    name: 'DashboardPage',
+    component: () => import( '../views/Home.vue')
   },
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   },
   {
     path: '/add/payment/:category',
     name: 'addpaymentForm',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: AddPaymentForm
+    component: () => import('../components/AddPaymentForm.vue')
   },
 
   {
     path: '/404',
     name: "Page404",
-    component: Page404,
+    component: () => import('../views/Page404.vue')
   }
 ]
 

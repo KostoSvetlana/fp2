@@ -22,6 +22,7 @@ props: {
 },
   methods: {
     editItem(item){
+        //К сожалению, ничего не вышло. Разберусь позже.
       console.log(item)
     },
     onShowContextMenu(event, item){

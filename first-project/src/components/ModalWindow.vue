@@ -14,7 +14,8 @@
 export default {
   components: { 
     AddPaymentForm: ()=>import ('./AddPaymentForm.vue'),
-    Auth: ()=> import('./Auth.vue') 
+    Auth: ()=> import('./Auth.vue'),
+    PaymentEdit: ()=> import('./PaymentEdit.vue') 
   },
     name: "ModalWindow",
     props:{

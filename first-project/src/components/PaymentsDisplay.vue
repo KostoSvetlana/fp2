@@ -9,9 +9,10 @@
 </template>
 
 <script>
+import PaymentEdit from '../components/PaymentEdit.vue'
 export default {
 nane: "PaymentsDisplay",
-
+components: PaymentEdit,
 props: {
     items:{
         type: Array,
@@ -21,11 +22,14 @@ props: {
     }
 },
   methods: {
-    editItem(item){
-        //К сожалению, ничего не вышло. Разберусь позже.
-      console.log(item)
+      editItem(item){
+        this.$modal.show('PaymentEdit', {
+            header: "Payment Edit",
+            item: item,
+            content:'PaymentEdit'
+        })
     },
-    onShowContextMenu(event, item){
+    onShowContextMenu(event, item , id){
       const items = [
         {
           text: "Edit",
@@ -36,7 +40,7 @@ props: {
         {
           text: "Delete",
           action: ()=>{
-            console.log(item.id)
+             this.deletePayment(id)
           }
         }
       ]

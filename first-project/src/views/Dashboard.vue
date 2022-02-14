@@ -1,5 +1,49 @@
 <template>
-  <div class="home">
+    <v-container>
+    <v-row>
+      <v-col>
+        <div class="text-h5 text-sm-h3 mb-8">My personal costs</div>
+
+        <v-dialog v-model="dialog" width="500">
+          <template #activator="{ on }">
+            <v-btn color="teal" dark v-on="on">Add new cost <v-icon>mdi-plus</v-icon> </v-btn> 
+          </template>
+
+          <v-card>
+            <add-payment-form @onAdd="dialog=false"/>
+          </v-card>
+
+        </v-dialog>
+
+
+
+        <payments-display :items="paymentsList" />
+      </v-col>
+      <v-col> 
+        <!-- <my-button>
+          <template #values="data">
+            asd
+            {{ data }}
+          </template>
+          <template #icon>
+            <v-icon>mdi-plus</v-icon>
+          </template>
+          Some asdasda
+        </my-button>
+        <my-button>
+          Text
+        </my-button> -->
+
+        <chart />
+        
+         </v-col>
+    </v-row>
+  </v-container>
+  
+  
+  
+  
+  <!-- <div class="home">
     <header>
       <div class="title">My personal coast</div>
     </header>
@@ -14,7 +58,7 @@
       <pagination :length="12" :cur="curPage" :n="3" @paginate="onChangePage "/>
     </main>
    
-  </div>
+  </div> -->
 
 </template>
 
@@ -26,22 +70,30 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
+//import { Pie } from 'vue-chartjs'
+
+import { Doughnut } from 'vue-chartjs'
 export default {
   name: 'Home',
+  //extends: Pie,
+  props:['Food', 'Transport', 'Education', 'Entertainment', 'Sport'],
   components: {
     PaymentsDisplay: ()=> import('../components/PaymentsDisplay.vue'),
-    ///AddPaymentForm,
-    Pagination: ()=>import('../components/Pagination.vue'),
-   
+    AddPaymentForm: ()=> import("../components/AddPaymentForm.vue"),
+   // Pagination: ()=>import('../components/Pagination.vue'),
+    Chart:()=> import('../components/Chart.vue')
    
   },
   data(){
 return {
+  dialog: false,
   curPage: 1,
       n: 10,
   show: false,
+
 };
   },
+    extends: Doughnut,
     computed: {
     ...mapGetters([
       'getFullPaymentValue'
@@ -50,7 +102,7 @@ return {
       return this.$store.getters.getPaymentList
     },
    currentElements(){
-      return this.paymentsList.slice(3 * (this.curPage - 1), 3 * (this.curPage - 1) + 3)
+     return this. paymentsList.slice(this.n * (this.curPage - 1), this.n * (this.curPage - 1)+ this.n)
       }
   },
   methods:{

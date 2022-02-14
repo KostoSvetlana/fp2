@@ -1,10 +1,19 @@
 <template>
  
-    <div class="wrapper" >
-<div class="item" v-for="item in items" :key="item.id">
- <span>{{item.id}}</span> - <span>{{item.date}}</span> - <span>{{ item.category }}</span> - <span>{{ item.value }}</span> - <span @click="onShowContextMenu($event,item)">...</span>
-  </div>
- </div>
+    <v-container>
+    <v-row>
+      <v-col :cols="2">#</v-col>
+      <v-col :cols="5">Date</v-col>
+      <v-col :cols="3">Category</v-col>
+      <v-col :cols="2">Value</v-col>
+    </v-row>
+    <v-row v-for="item in items" :key="item.id">
+      <v-col :cols="2">{{item.id}}</v-col>
+      <v-col :cols="5">{{item.date}}</v-col>
+      <v-col :cols="3">{{item.category}}</v-col>
+      <v-col :cols="2">{{item.value}}</v-col>
+    </v-row>
+  </v-container>
   
 </template>
 

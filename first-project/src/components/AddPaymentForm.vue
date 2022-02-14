@@ -1,18 +1,11 @@
 <template>
-  <div class="wrapper">
-  
-   <input placeholder="Value" v-model.number="value" />
-    <div class="select">
-      <select v-model="category">
-        <option v-for="(option, idx) in options" :key="idx">{{ option }}</option>
-      </select>
-    </div>
-    <input placeholder="Date" v-model="date" />
-    <button @click="onSaveClick">Save</button>
-    </div>
-   
- 
-  
+  <v-card class="pa-8">
+    <v-text-field label="Date" placeholder="Date" v-model="date" />
+    <v-text-field label="Value" placeholder="Value" v-model.number="value" />
+    <v-select :items="options" v-model="category" label="Standard"></v-select>
+
+    <v-btn @click="onSaveClick">Save</v-btn>
+  </v-card>
   
  
 </template>
@@ -40,13 +33,11 @@ getCurrentDate(){
 
 },
 options(){
-      return this.$store.getters.getCategoryList
+      return this.$store.getters.getCategoryList;
     }
 },
  methods: {
-   toggleElement(){
-this.isElVisible = !this.isElVisible
-   },
+ 
     onSaveClick () {
       const data = {
         id: Date.now(),
@@ -55,27 +46,29 @@ this.isElVisible = !this.isElVisible
           date: this.date || this.getCurrentDate,
 
       };
-      this.$emit('addPayment', data)
-      this.$store.commit('addDataToPaymentsList', data)
+     
+      this.$store.commit('addDataToPaymentsList', data);
+       this.$emit("onAdd");
   },
  },
-  async created() {
-    if(!this.options.length) {
-      await this.$store.dispatch('loadCategories')
-    }
-    this.category = this.options[0]
- },
+ // async created() {
+  //  if(!this.options.length) {
+  //    await this.$store.dispatch('loadCategories')
+  //  }
+  //  this.category = this.options[0]
+// },
       mounted() {
+       this.$store.dispatch("loadCategories");
         if(this.$route.params.category) {
-      this.category = this.$route.params.category
+      this.category = this.$route.params.category;
 
       }
       if(this.$route.query.value) {
-        this.value = this.$route.query.value
+        this.value = this.$route.query.value;
       }
       if(this.value && this.category) {
-        this.date = Date.now()
-        this.onSaveClick()
+        this.date = Date.now();
+        this.onSaveClick();
       }
   },
 };
